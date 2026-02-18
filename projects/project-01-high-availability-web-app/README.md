@@ -1,85 +1,102 @@
-# Project 01: High Availability Web Application on AWS
+Project Overview
 
-## Project Overview
-This project demonstrates how to design and deploy a highly available and scalable web application on AWS using core cloud services.  
-The architecture ensures fault tolerance, scalability, and security following AWS best practices.
+Designed and deployed a highly available and scalable 2-tier web application architecture on AWS using core cloud services. The solution eliminates single points of failure and ensures fault tolerance across multiple Availability Zones.
 
----
+Problem Statement:-
 
-## Problem Statement
-Single EC2-based applications fail when:
-- Traffic increases suddenly
-- The instance crashes
-- An Availability Zone goes down
+Traditional single EC2 deployments face:
 
-This project solves these issues by designing a highly available architecture.
+• Downtime during traffic spikes
 
----
+• Application failure if instance crashes
 
-## Architecture Components
-- Amazon VPC
-- Public Subnets (Multi-AZ)
-- EC2 Instances
-- Application Load Balancer (ALB)
-- Auto Scaling Group
-- Security Groups
-- Internet Gateway
+• Service disruption if an Availability Zone fails
 
----
+This project addresses these challenges using load balancing and auto scaling mechanisms.
 
-## Architecture Flow
-1. User sends request via browser
-2. Request reaches Application Load Balancer
+Architecture Components:-
+
+• Amazon VPC (Custom CIDR)
+
+• 2 Public Subnets across different AZs
+
+• Application Load Balancer (ALB)
+
+• Auto Scaling Group
+
+• EC2 Web Servers (Apache installed)
+
+Security Groups
+
+• Internet Gateway
+
+Architecture Flow :-
+
+1. User sends HTTP request from browser
+
+2. Traffic reaches Application Load Balancer
+
 3. ALB distributes traffic across EC2 instances
-4. Auto Scaling adds/removes instances based on load
-5. If one AZ fails, traffic is served from another AZ
 
----
+4. Auto Scaling dynamically adjusts instance count
 
-## AWS Services Used
-| Service | Purpose |
-|------|--------|
-| EC2 | Host web application |
-| ALB | Load balancing |
-| Auto Scaling | High availability |
-| VPC | Network isolation |
-| Security Groups | Access control |
+5. Multi-AZ deployment ensures high availability
 
----
+Implementation Steps:-
 
-## Implementation Steps
-1. Created a VPC with public subnets in 2 Availability Zones
-2. Launched EC2 instances with web server installed
-3. Configured Application Load Balancer
-4. Created Auto Scaling Group
-5. Attached target group to ALB
-6. Verified traffic distribution and failover
+1. Created custom VPC with public subnets in 2 Availability Zones
 
----
+2. Attached Internet Gateway and configured route tables
 
-## Failure Testing
-- Manually terminated one EC2 instance
-- Auto Scaling launched a new instance automatically
-- Load balancer continued serving traffic without downtime
+3. Launched EC2 instances with Apache web server
 
----
+4. Created Application Load Balancer
 
-## Security Considerations
-- Only ALB allowed public internet access
-- EC2 instances restricted via Security Groups
-- SSH access limited to admin IP
+5. Configured Target Group and health checks
 
----
+6. Created Auto Scaling Group with minimum and maximum capacity
 
-## Key Learnings
-- High availability is achieved using Multi-AZ design
-- Load balancers remove single points of failure
-- Auto Scaling ensures both performance and cost efficiency
+7. Integrated ASG with ALB
 
----
+8. Validated traffic distribution
 
-## Real-World Use Case
-Used in:
-- E-commerce websites
-- Banking applications
-- SaaS platforms
+Failure & Scaling Testing:-
+
+• Terminated one EC2 instance manually
+
+• Auto Scaling automatically launched replacement instance
+
+• Verified zero downtime via Load Balancer
+
+• Simulated load to observe scaling behavior
+
+
+Security Implementation:-
+
+• ALB exposed to public internet (Port 80)
+
+• EC2 instances restricted to ALB Security Group only
+
+• SSH access restricted to admin IP
+
+• Principle of least privilege applied
+
+Key Outcomes:-
+
+• Achieved high availability using Multi-AZ architecture
+
+• Eliminated single point of failure
+
+• Implemented horizontal scaling
+
+• Designed production-ready cloud deployment model
+
+Real-World Use Cases:-
+
+• E-commerce platforms
+
+• Banking & financial systems
+
+• SaaS applications
+
+• Enterprise web applications
